@@ -77,6 +77,10 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
 
         presenter.onViewReady();
 
+        initListener();
+    }
+
+    private void initListener() {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -93,7 +97,17 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+        searchView.setOnClickListener(v -> {
+            searchView.onActionViewExpanded();
 
+        });
+        searchView.setOnCloseListener(new android.support.v7.widget.SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                setQuery(null,null);
+                return false;
+            }
+        });
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

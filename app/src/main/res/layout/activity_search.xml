@@ -54,10 +54,17 @@
 
                 <android.support.v7.widget.SearchView
                     android:id="@+id/searchView"
-                    style="@style/MaterialSearchViewStyle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="4dp" />
+                    android:padding="4dp"
+                    android:theme="@style/MaterialSearchViewStyle"
+                    app:defaultQueryHint="Type job name or keyword"
+                    app:queryHint="Type job name or keyword" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/colorBlack" />
 
                 <TextView
                     android:layout_width="wrap_content"
