@@ -3,21 +3,19 @@ package beam.com.search.domain;
 
 import android.util.Log;
 
-import com.google.gson.Gson;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import beam.com.search.data.Callback;
 import beam.com.search.data.IResult;
 import beam.com.search.data.converters.ResponseConverters;
 import beam.com.search.data.github.GithubDataSource;
 import beam.com.search.data.github.model.GithubResponse;
+import beam.com.search.data.onErrorCallback;
+import beam.com.search.data.onSuccessCallback;
 import beam.com.search.data.searchgov.SearchGovDataSource;
 import beam.com.search.data.searchgov.model.SearchGovResponse;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
@@ -33,46 +31,6 @@ public class SearchUseCase implements UseCase<String, String, List<IResult>> {
         this.searchGovDataSource = searchGovDataSource;
     }
 
-
-    @Override
-    public void execute(String jobName, String location, Callback<List<IResult>> callback) {
-        Observable<List<GithubResponse>> github = githubDataSource.searchByJobNameOrLocation(jobName, location);
-        Observable<List<SearchGovResponse>> searchGov = searchGovDataSource.searchByJobNameOrLocation(jobName, location);
-
-
-        Observable<List<IResult>> zip = Observable.zip(github, searchGov, (githubResponses, searchGovResponses) -> {
-            List<IResult> items = new ArrayList<>();
-
-            Log.e(TAG, "execute: " + githubResponses.size());
-            Log.e(TAG, "execute: " + searchGovResponses.size());
-
-            convertGitHubResponse(githubResponses, items);
-            convertSearchGovResponse(searchGovResponses, items);
-            Log.e(TAG, "last: " + items.size());
-
-
-            return items;
-        });
-
-        zip.subscribe(new DisposableObserver<List<IResult>>() {
-            @Override
-            public void onNext(List<IResult> o) {
-                callback.onSuccess(o);
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                callback.onError(e);
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
-    }
 
     private void convertGitHubResponse(List<GithubResponse> githubResponses, List<IResult> items) {
         Observable.fromArray(githubResponses).map(githubResponses1 -> {
@@ -117,12 +75,46 @@ public class SearchUseCase implements UseCase<String, String, List<IResult>> {
                 .observeOn(AndroidSchedulers.mainThread()).subscribe(new DisposableObserver<List<IResult>>() {
             @Override
             public void onNext(List<IResult> iResults) {
-                Log.e(TAG, "onNext: " + iResults.size());
 
             }
 
             @Override
             public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        });
+    }
+
+    @Override
+    public void execute(String jobName, String location, onSuccessCallback<List<IResult>> callback, onErrorCallback onErrorCallback) {
+        Observable<List<GithubResponse>> github = githubDataSource.searchByJobNameOrLocation(jobName, location);
+        Observable<List<SearchGovResponse>> searchGov = searchGovDataSource.searchByJobNameOrLocation(jobName, location);
+
+
+        Observable<List<IResult>> zip = Observable.zip(github, searchGov, (githubResponses, searchGovResponses) -> {
+            List<IResult> items = new ArrayList<>();
+
+            convertGitHubResponse(githubResponses, items);
+            convertSearchGovResponse(searchGovResponses, items);
+
+
+            return items;
+        });
+
+        zip.subscribe(new DisposableObserver<List<IResult>>() {
+            @Override
+            public void onNext(List<IResult> o) {
+                callback.onSuccess(o);
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                onErrorCallback.onError(e);
 
             }
 

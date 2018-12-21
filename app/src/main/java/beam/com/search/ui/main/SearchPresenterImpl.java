@@ -4,9 +4,10 @@ package beam.com.search.ui.main;
 import java.util.List;
 
 import beam.com.search.R;
-import beam.com.search.data.Callback;
 import beam.com.search.data.IResult;
-import beam.com.search.domain.SearchUseCase;
+import beam.com.search.data.onErrorCallback;
+import beam.com.search.data.onSuccessCallback;
+import beam.com.search.domain.UseCase;
 import beam.com.search.logging.LoggingHelper;
 
 public class SearchPresenterImpl implements SearchPresenter {
@@ -15,11 +16,11 @@ public class SearchPresenterImpl implements SearchPresenter {
 
     private SearchView view;
 
-    private SearchUseCase searchUseCase;
+    private UseCase<String, String, List<IResult>> searchUseCase;
 
     private LoggingHelper loggingHelper;
 
-    public SearchPresenterImpl(SearchView view, SearchUseCase searchUseCase, LoggingHelper loggingHelper) {
+    public SearchPresenterImpl(SearchView view, UseCase<String, String, List<IResult>> searchUseCase, LoggingHelper loggingHelper) {
         this.view = view;
         this.searchUseCase = searchUseCase;
         this.loggingHelper = loggingHelper;
@@ -27,30 +28,7 @@ public class SearchPresenterImpl implements SearchPresenter {
 
     @Override
     public void onViewReady() {
-        view.showLoadingIndicator();
-        view.hideResultItems();
-        view.hideNoResultsContainer();
-
-        searchUseCase.execute(null, null, new Callback<List<IResult>>() {
-            @Override
-            public void onSuccess(List<IResult> result) {
-                view.hideLoadingIndicator();
-                if (!result.isEmpty()) {
-                    view.showResultItems(result);
-                } else {
-                    view.showNoResultsContainer();
-                }
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                loggingHelper.error(TAG, "An error occurred while getting the search result ", error);
-                view.hideLoadingIndicator();
-                view.showToast(R.string.an_error_occurred);
-            }
-        });
-
-
+        search(null, null);
     }
 
 
@@ -62,24 +40,26 @@ public class SearchPresenterImpl implements SearchPresenter {
 
 
     private void search(String jobName, String location) {
-      /*  if (jobName != null & jobName.isEmpty()) {
-            view.showToast(R.string.enter_search_query);
-        } else*/ {
+
+        {
             view.showLoadingIndicator();
             view.hideResultItems();
             view.hideNoResultsContainer();
 
-            searchUseCase.execute(jobName, location, new Callback<List<IResult>>() {
+            searchUseCase.execute(jobName, location, new onSuccessCallback<List<IResult>>() {
                 @Override
                 public void onSuccess(List<IResult> result) {
                     view.hideLoadingIndicator();
-                    if (!result.isEmpty()) {
+
+                    if (result != null && !result.isEmpty()) {
                         view.showResultItems(result);
                     } else {
                         view.showNoResultsContainer();
                     }
                 }
 
+
+            }, new onErrorCallback() {
                 @Override
                 public void onError(Throwable error) {
                     view.hideNoResultsContainer();
@@ -91,3 +71,4 @@ public class SearchPresenterImpl implements SearchPresenter {
         }
     }
 }
+

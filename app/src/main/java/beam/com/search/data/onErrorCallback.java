@@ -1,9 +1,7 @@
 
 package beam.com.search.data;
 
-public interface Callback<T> {
-
-    void onSuccess(T result);
+public interface onErrorCallback{
 
     void onError(Throwable error);
 }
