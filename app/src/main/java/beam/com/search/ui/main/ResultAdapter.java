@@ -1,6 +1,7 @@
 package beam.com.search.ui.main;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +17,10 @@ import java.util.List;
 
 import beam.com.search.R;
 import beam.com.search.data.IResult;
+import beam.com.search.ui.jobwebview.JobDetailsActivity;
+
+import static beam.com.search.ui.jobwebview.JobDetailsActivity.KEY_LINK;
+import static beam.com.search.ui.jobwebview.JobDetailsActivity.KEY_NAME;
 
 public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder> {
 
@@ -47,7 +52,17 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         holder.tvJob.setText(result.getJobTitle());
         holder.tvLocation.setText(result.getLocation());
         holder.tvPostDate.setText(result.getPostDate());
-       holder.tvProvider.setText(result.getProvider());
+        holder.tvProvider.setText(result.getProvider());
+
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, JobDetailsActivity.class);
+            intent.putExtra(KEY_LINK, result.getUrl());
+            intent.putExtra(KEY_NAME, result.getCompanyName());
+
+            context.startActivity(intent);
+
+        });
     }
 
     @Override

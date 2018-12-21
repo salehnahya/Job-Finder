@@ -42,6 +42,11 @@ public class ResponseConverters {
             public String getProvider() {
                 return "GitHub";
             }
+
+            @Override
+            public String getUrl() {
+                return response.getUrl();
+            }
         };
     }
 
@@ -78,6 +83,11 @@ public class ResponseConverters {
             @Override
             public String getProvider() {
                 return "Search Gov";
+            }
+
+            @Override
+            public String getUrl() {
+                return response.getUrl();
             }
         };
     }

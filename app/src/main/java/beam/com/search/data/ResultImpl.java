@@ -2,12 +2,13 @@ package beam.com.search.data;
 
 public class ResultImpl implements IResult {
 
-    String companyName;
-    String jobTitle;
-    String logo;
-    String location;
-    String postDate;
-    String provider;
+    private String companyName;
+    private String jobTitle;
+    private String logo;
+    private String location;
+    private String postDate;
+    private String provider;
+    private String url;
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName;
@@ -27,6 +28,10 @@ public class ResultImpl implements IResult {
 
     public void setPostDate(String postDate) {
         this.postDate = postDate;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     @Override
@@ -57,5 +62,10 @@ public class ResultImpl implements IResult {
     @Override
     public String getProvider() {
         return provider;
+    }
+
+    @Override
+    public String getUrl() {
+        return url;
     }
 }
