@@ -11,7 +11,7 @@ import retrofit2.http.Query;
 public interface SearchGovService {
 
     @GET("search.json")
-    Observable<List<SearchGovResponse>> searchResult(@Query("query") String jobName, @Query("location") String location);
+    Observable<List<SearchGovResponse>> searchResult(@Query("query") String jobName);
 
 
 }

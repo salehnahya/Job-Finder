@@ -43,7 +43,7 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int i) {
         IResult result = itemList.get(i);
-        if (result.getLogo() != null)
+        if (result != null && result.getLogo() != null)
             Picasso.get().load(result.getLogo()).networkPolicy(NetworkPolicy.OFFLINE).placeholder(R.drawable.new_job).into(holder.imgCompany);
         else
             holder.imgCompany.setImageDrawable(context.getResources().getDrawable(R.drawable.new_job));

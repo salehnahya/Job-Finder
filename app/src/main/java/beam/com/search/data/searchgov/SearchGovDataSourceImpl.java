@@ -8,8 +8,6 @@ import com.google.gson.Gson;
 import java.util.List;
 
 import beam.com.search.BuildConfig;
-import beam.com.search.data.github.GithubService;
-import beam.com.search.data.github.model.GithubResponse;
 import beam.com.search.data.searchgov.model.SearchGovResponse;
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -65,7 +63,9 @@ public class SearchGovDataSourceImpl implements SearchGovDataSource {
 
     @Override
     public Observable<List<SearchGovResponse>> searchByJobNameOrLocation(String jobName, String location) {
-        return searchGovService.searchResult(jobName, location).subscribeOn(Schedulers.io())
+        if (location != null)
+            jobName += "  jobs in " + location;
+        return searchGovService.searchResult(jobName).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
