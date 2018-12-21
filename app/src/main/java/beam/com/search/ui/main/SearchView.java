@@ -20,7 +20,6 @@ public interface SearchView extends View {
 
     void hideNoResultsContainer();
 
-    void openUserDetailsActivity(String username);
 
     void showToast(@StringRes int resId);
 }

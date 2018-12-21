@@ -81,6 +81,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         initListener();
     }
 
+
     private void initListener() {
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -142,11 +143,17 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
     }
 
 
+    /**
+     * Responsible for post query to server to get info
+     */
     @Override
     public void setQuery(String jobName, String location) {
         presenter.onSearch(jobName, location);
     }
 
+    /**
+     * Responsible for Showing List on screen and updating adapter
+     */
     @Override
     public void showResultItems(List<IResult> resultItems) {
         recyclerView.setVisibility(VISIBLE);
@@ -155,39 +162,53 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         resultAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * Responsible for hiding list since list is loading or no data
+     */
     @Override
     public void hideResultItems() {
         recyclerView.setVisibility(GONE);
     }
 
 
-    @Override
-    public void openUserDetailsActivity(String username) {
-
-    }
-
-
+    /**
+     * Responsible for showing NoData Layout
+     */
     @Override
     public void showNoResultsContainer() {
         noResultsContainer.setVisibility(VISIBLE);
     }
 
+
+    /**
+     * Responsible for hiding No data found layout
+     */
     @Override
     public void hideNoResultsContainer() {
         noResultsContainer.setVisibility(GONE);
     }
 
 
+    /**
+     * Responsible for Showing Message
+     */
     @Override
     public void showToast(int resId) {
         Toast.makeText(this, resId, LENGTH_SHORT).show();
     }
 
+    /**
+     * Responsible for Showing loading Indicator
+     */
     @Override
     public void showLoadingIndicator() {
         loadingIndicator.setVisibility(VISIBLE);
     }
 
+
+    /**
+     * Responsible for hiding loading Indicator
+     */
     @Override
     public void hideLoadingIndicator() {
         loadingIndicator.setVisibility(GONE);
