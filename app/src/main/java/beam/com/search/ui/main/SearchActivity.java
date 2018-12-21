@@ -121,10 +121,12 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         searchView.setOnCloseListener(new android.support.v7.widget.SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                setQuery(null, null);
+                query = null;
+                setQuery(query, location);
                 return false;
             }
         });
+
         searchView.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {
