@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -97,6 +98,21 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
+
+        autocompleteFragment.getView().findViewById(R.id.place_autocomplete_clear_button)
+                .setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        autocompleteFragment.setText("");
+                        location = null;
+                        view.setVisibility(View.GONE);
+                        setQuery(query, location);
+
+                    }
+                });
+
+
         searchView.setOnClickListener(v -> {
             searchView.onActionViewExpanded();
 
@@ -104,7 +120,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
         searchView.setOnCloseListener(new android.support.v7.widget.SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                setQuery(null,null);
+                setQuery(null, null);
                 return false;
             }
         });
@@ -113,6 +129,7 @@ public class SearchActivity extends AppCompatActivity implements SearchView {
             public boolean onQueryTextSubmit(String s) {
                 query = s;
                 setQuery(s, location);
+
 
                 return true;
             }
