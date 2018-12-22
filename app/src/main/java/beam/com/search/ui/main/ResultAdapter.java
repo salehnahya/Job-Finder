@@ -48,11 +48,12 @@ public class ResultAdapter extends RecyclerView.Adapter<ResultAdapter.ViewHolder
         else
             holder.imgCompany.setImageDrawable(context.getResources().getDrawable(R.drawable.new_job));
 
-        holder.tvCompanyName.setText(result.getCompanyName());
-        holder.tvJob.setText(result.getJobTitle());
-        holder.tvLocation.setText(result.getLocation());
-        holder.tvPostDate.setText(result.getPostDate());
-        holder.tvProvider.setText(result.getProvider());
+        if (result != null &&result.getCompanyName() != null)
+            holder.tvCompanyName.setText(result.getCompanyName()+"");
+        holder.tvJob.setText(result.getJobTitle()+"");
+        holder.tvLocation.setText(result.getLocation()+"");
+        holder.tvPostDate.setText(result.getPostDate()+"");
+        holder.tvProvider.setText(result.getProvider()+"");
 
 
         holder.itemView.setOnClickListener(v -> {

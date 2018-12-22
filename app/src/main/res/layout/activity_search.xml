@@ -57,6 +57,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="4dp"
+                    style="@style/MaterialSearchViewStyle"
                     android:theme="@style/MaterialSearchViewStyle"
                     app:defaultQueryHint="Type job name or keyword"
                     app:queryHint="Type job name or keyword" />
